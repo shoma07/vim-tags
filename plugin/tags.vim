@@ -129,7 +129,7 @@ function s:add_tags_location(location)
 endfunction
 
 function! s:generate_options()
-  let options = ['--tag-relative']
+  let options = ['--tag-relative=yes']
 
   let s:custom_dirs      = []
   let s:files_to_include = []
@@ -261,7 +261,7 @@ fun! s:generate_tags(bang, redraw)
 
     if (getftime(file_name) < dir_time) || (getfsize(file_name) == 0)
       let custom_tags_command = substitute(g:vim_tags_project_tags_command, '{DIRECTORY}', shellescape(dir_name), '')
-      let custom_tags_command = substitute(custom_tags_command, '{OPTIONS}', '--tag-relative -f ' . shellescape(file_name), '')
+      let custom_tags_command = substitute(custom_tags_command, '{OPTIONS}', '--tag-relative=yes -f ' . shellescape(file_name), '')
       call s:execute_async_command(custom_tags_command)
     endif
   endfor
@@ -273,7 +273,7 @@ fun! s:generate_tags(bang, redraw)
 
   " Append files from negated patterns
   if !empty(s:files_to_include)
-    let append_command_template = substitute(g:vim_tags_project_tags_command, '{OPTIONS}', '--tag-relative -a -f ' . s:tags_directory . '/' . g:vim_tags_main_file, '')
+    let append_command_template = substitute(g:vim_tags_project_tags_command, '{OPTIONS}', '--tag-relative=yes -a -f ' . s:tags_directory . '/' . g:vim_tags_main_file, '')
     for file_to_include in s:files_to_include
       call s:execute_async_command(substitute(append_command_template, '{DIRECTORY}', file_to_include, ''))
     endfor
